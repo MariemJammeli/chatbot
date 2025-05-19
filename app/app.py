@@ -35,7 +35,7 @@ if "selected_history" not in st.session_state:
 
 # ========== Load resources ==========
 
-df = pd.read_csv("app/ml.csv", sep=';')
+df = pd.read_csv("/opt/render/project/src/dataset_chatbot.zip", sep=';')
 df["ErrorCode"] = df["ErrorKindTypeKey"].astype(str) + "-" + df["ErrorType"].astype(str)
 df["text"] = df["Remark"].fillna("") + " " + df["ErrorMessage"].fillna("")
 df = df.dropna(subset=["text", "ErrorCode", "RequiredOperations"])
@@ -50,7 +50,7 @@ embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 df['PreferredTechnician'] = df['PreferredTechnician'].astype(str)
 df['tech_encoded'] = tech_encoder.transform(df['PreferredTechnician'])
 
-model_path = "app/my_model2"
+model_path = "/opt/render/project/src/modele_chatbot.zip"
 tokenizer2 = AutoTokenizer.from_pretrained(model_path)
 model2 = AutoModelForSequenceClassification.from_pretrained(model_path)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
