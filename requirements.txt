@@ -1,0 +1,10 @@
+streamlit
+torch
+pandas
+numpy
+transformers
+scikit-learn
+google-generativeai
+sentence-transformers
+gdown
+lightgbm

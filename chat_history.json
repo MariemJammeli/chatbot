@@ -1,0 +1,27 @@
+[
+  {
+    "topic": "H50089-PC fährt nicht -  Netztei defekt keine 24 V\nlt ...",
+    "user_input": "AT jetzt länger ausgeschaltet war fährt dieser nicht wieder hoch",
+    "q1": "Welche konkreten Symptome zeigen sich, wenn Sie versuchen, das Gerät (AT) hochzufahren? (z.B. keine Reaktion, LEDs leuchten, Lüfter laufen, Fehlermeldungen auf dem Bildschirm)",
+    "a1": "Beim Starten bleibt er im Bootmenü mit blinkendem Cursor am Ende hängen",
+    "q2": "Welche Hardwarekomponenten haben Sie zuletzt an dem AT angeschlossen oder verändert, bevor er sich nicht mehr starten ließ?",
+    "a2": "PC fährt nicht hoch Defekt",
+    "code": "H50089-PC fährt nicht",
+    "ops": " Netztei defekt keine 24 V\nlt KD fährt seit Gestern Abeend nicht mehr hoch",
+    "technicians": [
+      [
+        "alban.qerkinaj",
+        0.7414324106351349
+      ],
+      [
+        "lars.gruening",
+        0.4951386920561827
+      ],
+      [
+        "christian.kulla",
+        0.47815375780280184
+      ]
+    ],
+    "estimated_time": 61
+  }
+]
