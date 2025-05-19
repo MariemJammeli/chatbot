@@ -1,7 +1,7 @@
 import zipfile
 import os
 
-zip_path = "dataset.zip"
+zip_path = "app/dataset.zip"
 extracted_file = "ml.csv"  # or whatever the actual CSV file is called
 
 if not os.path.exists(extracted_file):
