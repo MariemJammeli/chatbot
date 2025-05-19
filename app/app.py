@@ -41,16 +41,16 @@ df["text"] = df["Remark"].fillna("") + " " + df["ErrorMessage"].fillna("")
 df = df.dropna(subset=["text", "ErrorCode", "RequiredOperations"])
 df = df.reset_index(drop=True)
 
-tech_encoder = joblib.load("/opt/render/project/src/modele_chatbot/tech_encoder.joblib")
-error_kind_encoder = joblib.load("/opt/render/project/src/modele_chatbot/error_kind_encoder.joblib")
-error_type_encoder = joblib.load("/opt/render/project/src/modele_chatbot/error_type_encoder.joblib")
-lgb_model = joblib.load("/opt/render/project/src/modele_chatbot/tech_recommendation_model.joblib")
+tech_encoder = joblib.load("app/tech_encoder.joblib")
+error_kind_encoder = joblib.load("app/error_kind_encoder.joblib")
+error_type_encoder = joblib.load("app/error_type_encoder.joblib")
+lgb_model = joblib.load("/app/tech_recommendation_model.joblib")
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 df['PreferredTechnician'] = df['PreferredTechnician'].astype(str)
 df['tech_encoded'] = tech_encoder.transform(df['PreferredTechnician'])
 
-model_path = "/opt/render/project/src/modele_chatbot.zip"
+model_path = "Mariem23/DistillBertFinetuned"
 tokenizer2 = AutoTokenizer.from_pretrained(model_path)
 model2 = AutoModelForSequenceClassification.from_pretrained(model_path)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
