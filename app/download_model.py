@@ -16,7 +16,7 @@ for file_id, output in files:
         continue
     url = f"https://drive.google.com/uc?id={file_id}"
     print(f"Téléchargement de {output} ...")
-    gdown.download(url, output, quiet=False)
+    gdown.download(url, output, quiet=False, fuzzy=True)
 
     if output.endswith(".zip"):
         print(f"Décompression de {output} ...")
