@@ -14,23 +14,28 @@ import os
 import zipfile
 import gdown
 
-def setup_dataset():
-    file_id = "159Y8TcaaikeDhwp6GTK9IHYRHfICI1QJ"
-    output_zip = "app/dataset.zip"
-    extracted_file = "app/ml.csv"
+import os
 
-    if not os.path.exists(extracted_file):
-        if not os.path.exists(output_zip):
-            url = f"https://drive.google.com/uc?id={file_id}"
-            print(f"Téléchargement de {output_zip} ...")
-            gdown.download(url, output_zip, quiet=False)
-        print("Extraction du zip ...")
-        with zipfile.ZipFile(output_zip, 'r') as zip_ref:
-            zip_ref.extractall("app")
-    else:
-        print("Le dataset est déjà extrait.")
+required_files = [
+    'dataset.zip',
+    'tech_recommendation_model.joblib',
+    'tech_encoder.joblib',
+    'download_model.py',
+    'app.py',
+    'error_type_encoder.joblib',
+    'error_kind_encoder.joblib',
+    'ml.csv'
+]
 
-setup_dataset()
+current_files = os.listdir("app")
+
+missing_files = [file for file in required_files if file not in current_files]
+
+if missing_files:
+    print("Fichiers manquants :", missing_files)
+else:
+    print("✅ Tous les fichiers requis sont présents.")
+
 
 # ========== File-based Chat History ==========
 
