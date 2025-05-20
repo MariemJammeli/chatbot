@@ -1,5 +1,6 @@
 import zipfile
 import os
+import gdown 
 # Liste des fichiers à télécharger (id, nom de sortie)
 files = [
     ("159Y8TcaaikeDhwp6GTK9IHYRHfICI1QJ", "dataset_chatbot.zip")
