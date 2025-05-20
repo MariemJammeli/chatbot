@@ -162,8 +162,7 @@ if st.sidebar.button("➕ Neue Konversation"):
 for idx, chat in enumerate(st.session_state.chat_history):
     if st.sidebar.button(chat["topic"], key=f"history_{idx}"):
         st.session_state.selected_history = idx
-        st.experimental_rerun()
-
+        st.rerun()
 # Main conversation display
 if st.session_state.selected_history is not None:
     selected = st.session_state.chat_history[st.session_state.selected_history]
