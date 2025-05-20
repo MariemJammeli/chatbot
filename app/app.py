@@ -238,7 +238,7 @@ else:
                             duration_match = df[(df["ErrorCode"] == code) & (df["RequiredOperations"] == ops)]
                             if not duration_match.empty:
                                 estimated_time = int(duration_match["DurationInMinutes"].mean())
-                                                                st.markdown(f"⏱️ **Die Arbeit wird voraussichtlich etwa {estimated_time} Minuten dauern.**")
+                                st.markdown(f"⏱️ **Die Arbeit wird voraussichtlich etwa {estimated_time} Minuten dauern.**")
                             else:
                                 estimated_time = None
                                 st.markdown("⏱️ **Keine Schätzung der Dauer verfügbar.**")
