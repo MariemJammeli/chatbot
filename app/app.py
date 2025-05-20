@@ -155,7 +155,8 @@ st.sidebar.title("📂 Gesprächsverlauf")
 # ➕ Button to start new conversation in sidebar
 if st.sidebar.button("➕ Neue Konversation"):
     st.session_state.selected_history = None
-    st.experimental_rerun()
+    st.rerun()  # FIXED
+
 
 # History buttons in sidebar
 for idx, chat in enumerate(st.session_state.chat_history):
@@ -264,6 +265,6 @@ if st.button("🆕 Neue Konversation starten"):
     st.session_state.selected_history = None
     st.session_state.chat_history = []
     save_history(st.session_state.chat_history)
-    st.experimental_rerun()
+    st.rerun()  # FIXED
 
 
