@@ -169,9 +169,16 @@ st.title("🤖 Technischer Support Chatbot")
 
 # Sidebar history panel
 st.sidebar.title("📂 Gesprächsverlauf")
+
+# ➕ Button to start new conversation
+if st.sidebar.button("➕ Neue Konversation"):
+    st.session_state.selected_history = None
+
+# Existing history buttons
 for idx, chat in enumerate(st.session_state.chat_history):
     if st.sidebar.button(chat["topic"], key=f"history_{idx}"):
         st.session_state.selected_history = idx
+
 
 # If a previous conversation is selected, display it
 if st.session_state.selected_history is not None:
@@ -255,6 +262,9 @@ else:
                                 st.info("📨 Wir arbeiten jetzt an deinem Serviceauftrag. "
                                 "Die Informationen wurden an den Administrator gesendet, "
                                 "und er wird sich in Kürze mit dir in Verbindung setzen.")
+                                if st.button("🆕 Neue Konversation starten"):
+                                    st.session_state.selected_history = None
+                                    st.experimental_rerun()
 
                                 st.session_state.chat_history.append({
                                     "topic": f"{code} - {ops[:30]}...",
