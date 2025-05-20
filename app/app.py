@@ -264,6 +264,20 @@ else:
                 elif solved_answer:
                     st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.")
 
+                    # Save conversation even when problem is solved
+                    new_history = {
+                        "topic": f"Fehlercode {code} am {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                        "code": code,
+                        "ops": ops,
+                        "q1": question1,
+                        "a1": answer1,
+                        "q2": question2,
+                        "a2": answer2,
+                        "technicians": [],
+                        "estimated_time": None,
+                    }
+                    st.session_state.chat_history.append(new_history)
+                    save_history(st.session_state.chat_history)
 # --- Always show this button at the bottom, outside all conditionals ---
 st.markdown("---")
 if st.button("🆕 Neue Konversation starten"):
