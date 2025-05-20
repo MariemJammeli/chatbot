@@ -9,13 +9,9 @@ from sentence_transformers import SentenceTransformer  # type: ignore
 import joblib  # type: ignore
 import os
 import json
-import gdown # type: ignore
-import os
 import zipfile
-import gdown
 
-import os
-
+# ========== File Checks ==========
 required_files = [
     'dataset.zip',
     'tech_recommendation_model.joblib',
@@ -27,7 +23,6 @@ required_files = [
     'ml.csv'
 ]
 
-# Exemple
 current_files = os.listdir("app")
 missing_files = [f for f in required_files if f not in current_files]
 
@@ -36,10 +31,7 @@ if missing_files:
 else:
     print("✅ Tous les fichiers requis sont présents.")
 
-
-# ========== File-based Chat History ==========
-
-
+# ========== Chat History ==========
 HISTORY_FILE = "chat_history.json"
 
 def load_history():
@@ -52,22 +44,16 @@ def save_history(history):
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
-# ========== Setup session state ==========
-
+# ========== Session State ==========
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = load_history()
 if "selected_history" not in st.session_state:
     st.session_state.selected_history = None
 
-# ========== Load resources ==========
-import os
-import zipfile
-import pandas as pd
-
+# ========== Load data and models ==========
 CSV_PATH = "app/ml.csv"
 ZIP_PATH = "app/dataset.zip"
 
-# Vérifier si le CSV existe, sinon l'extraire
 if not os.path.exists(CSV_PATH):
     if os.path.exists(ZIP_PATH):
         with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
@@ -76,9 +62,7 @@ if not os.path.exists(CSV_PATH):
     else:
         raise FileNotFoundError("❌ Le fichier dataset.zip est introuvable.")
 
-# Charger le fichier
 df = pd.read_csv(CSV_PATH, sep=';')
-
 df["ErrorCode"] = df["ErrorKindTypeKey"].astype(str) + "-" + df["ErrorType"].astype(str)
 df["text"] = df["Remark"].fillna("") + " " + df["ErrorMessage"].fillna("")
 df = df.dropna(subset=["text", "ErrorCode", "RequiredOperations"])
@@ -108,7 +92,6 @@ genai.configure(api_key="AIzaSyAmWJigahLFZcanuotVI3eToMq_YP1M37c")
 gemini_model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # ========== Helper functions ==========
-
 def generate_first_question(problem_text):
     prompt = (
         f"Ein Benutzer beschreibt folgendes technisches Problem: '{problem_text}'. "
@@ -163,24 +146,24 @@ def recommend_top_techs(job_row, tech_list, model, encoder, text_fields):
     return top3
 
 # ========== Streamlit UI ==========
-
 st.set_page_config(page_title="Techniker-Chatbot", layout="centered")
 st.title("🤖 Technischer Support Chatbot")
 
 # Sidebar history panel
 st.sidebar.title("📂 Gesprächsverlauf")
 
-# ➕ Button to start new conversation
+# ➕ Button to start new conversation in sidebar
 if st.sidebar.button("➕ Neue Konversation"):
     st.session_state.selected_history = None
+    st.experimental_rerun()
 
-# Existing history buttons
+# History buttons in sidebar
 for idx, chat in enumerate(st.session_state.chat_history):
     if st.sidebar.button(chat["topic"], key=f"history_{idx}"):
         st.session_state.selected_history = idx
+        st.experimental_rerun()
 
-
-# If a previous conversation is selected, display it
+# Main conversation display
 if st.session_state.selected_history is not None:
     selected = st.session_state.chat_history[st.session_state.selected_history]
     st.markdown("### 🗂️ Früheres Gespräch:")
@@ -197,9 +180,6 @@ if st.session_state.selected_history is not None:
 
     if "estimated_time" in selected:
         st.markdown(f"⏱️ **Die Arbeit wird voraussichtlich etwa {selected['estimated_time']} Minuten dauern.**")
-
-    if st.button("← Neue Konversation starten"):
-        st.session_state.selected_history = None
 
 else:
     user_input = st.text_area("🔧 Beschreibe dein technisches Problem (auf Deutsch):")
@@ -258,31 +238,31 @@ else:
                             duration_match = df[(df["ErrorCode"] == code) & (df["RequiredOperations"] == ops)]
                             if not duration_match.empty:
                                 estimated_time = int(duration_match["DurationInMinutes"].mean())
-                                st.markdown(f"⏱️ **Die Arbeit wird voraussichtlich etwa {estimated_time} Minuten dauern.**")
-                                st.info("📨 Wir arbeiten jetzt an deinem Serviceauftrag. "
-                                "Die Informationen wurden an den Administrator gesendet, "
-                                "und er wird sich in Kürze mit dir in Verbindung setzen.")
-
-                                st.session_state.chat_history.append({
-                                    "topic": f"{code} - {ops[:30]}...",
-                                    "user_input": user_input,
-                                    "q1": question1,
-                                    "a1": answer1,
-                                    "q2": question2,
-                                    "a2": answer2,
-                                    "code": code,
-                                    "ops": ops,
-                                    "technicians": technicians,
-                                    "estimated_time": estimated_time
-                                })
-                                save_history(st.session_state.chat_history)
-                                # 👉 New conversation button at the end
-                                if st.button("🆕 Neue Konversation starten"):
-                                    st.session_state.selected_history = None
-                                    st.experimental_rerun()
+                                                                st.markdown(f"⏱️ **Die Arbeit wird voraussichtlich etwa {estimated_time} Minuten dauern.**")
                             else:
-                                st.markdown("⏱️ **Geschätzte Reparaturzeit:** Nicht verfügbar")
-                        else:
-                            st.warning("⚠️ Kein passender Fehlercode-Eintrag gefunden für die Technikerempfehlung.")
-                elif solved_answer:
-                    st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.")
+                                estimated_time = None
+                                st.markdown("⏱️ **Keine Schätzung der Dauer verfügbar.**")
+
+                            # Save conversation to history
+                            new_history = {
+                                "topic": f"Fehlercode {code} am {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                                "code": code,
+                                "ops": ops,
+                                "q1": question1,
+                                "a1": answer1,
+                                "q2": question2,
+                                "a2": answer2,
+                                "technicians": technicians,
+                                "estimated_time": estimated_time,
+                            }
+                            st.session_state.chat_history.append(new_history)
+                            save_history(st.session_state.chat_history)
+
+# --- Always show this button at the bottom, outside all conditionals ---
+st.markdown("---")
+if st.button("🆕 Neue Konversation starten"):
+    st.session_state.selected_history = None
+    st.session_state.chat_history = []
+    save_history(st.session_state.chat_history)
+    st.experimental_rerun()
+
