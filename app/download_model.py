@@ -12,7 +12,7 @@ for file_id, output in files:
     url = f"https://drive.google.com/uc?id={file_id}"
     print(f"Téléchargement de {output} ...")
     gdown.download(url, output, quiet=False)
-zip_path = "/opt/render/project/src/dataset_chatbot.zip"
+zip_path = "app/dataset.zip"
 extracted_file = "ml.csv"  # or whatever the actual CSV file is called
 
 if not os.path.exists(extracted_file):
