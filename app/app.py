@@ -258,6 +258,12 @@ else:
                             }
                             st.session_state.chat_history.append(new_history)
                             save_history(st.session_state.chat_history)
+                            else:
+                                st.markdown("⏱️ **Geschätzte Reparaturzeit:** Nicht verfügbar")
+                        else:
+                            st.warning("⚠️ Kein passender Fehlercode-Eintrag gefunden für die Technikerempfehlung.")
+                elif solved_answer:
+                    st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.")
 
 # --- Always show this button at the bottom, outside all conditionals ---
 st.markdown("---")
