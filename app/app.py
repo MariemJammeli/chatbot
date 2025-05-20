@@ -10,6 +10,27 @@ import joblib  # type: ignore
 import os
 import json
 import gdown # type: ignore
+import os
+import zipfile
+import gdown
+
+def setup_dataset():
+    file_id = "159Y8TcaaikeDhwp6GTK9IHYRHfICI1QJ"
+    output_zip = "app/dataset.zip"
+    extracted_file = "app/ml.csv"
+
+    if not os.path.exists(extracted_file):
+        if not os.path.exists(output_zip):
+            url = f"https://drive.google.com/uc?id={file_id}"
+            print(f"Téléchargement de {output_zip} ...")
+            gdown.download(url, output_zip, quiet=False)
+        print("Extraction du zip ...")
+        with zipfile.ZipFile(output_zip, 'r') as zip_ref:
+            zip_ref.extractall("app")
+    else:
+        print("Le dataset est déjà extrait.")
+
+setup_dataset()
 
 # ========== File-based Chat History ==========
 
@@ -44,7 +65,7 @@ df = df.reset_index(drop=True)
 tech_encoder = joblib.load("app/tech_encoder.joblib")
 error_kind_encoder = joblib.load("app/error_kind_encoder.joblib")
 error_type_encoder = joblib.load("app/error_type_encoder.joblib")
-lgb_model = joblib.load("/app/tech_recommendation_model.joblib")
+lgb_model = joblib.load("app/tech_recommendation_model.joblib")
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 df['PreferredTechnician'] = df['PreferredTechnician'].astype(str)
@@ -231,4 +252,4 @@ else:
                         else:
                             st.warning("⚠️ Kein passender Fehlercode-Eintrag gefunden für die Technikerempfehlung.")
                 elif solved_answer:
-                    st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.")
+                    st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.") vérifie ce code 
