@@ -35,7 +35,7 @@ if "selected_history" not in st.session_state:
 
 # ========== Load resources ==========
 
-df = pd.read_csv("/opt/render/project/src/ml.csv", sep=';')
+df = pd.read_csv("app/ml.csv", sep=';')
 df["ErrorCode"] = df["ErrorKindTypeKey"].astype(str) + "-" + df["ErrorType"].astype(str)
 df["text"] = df["Remark"].fillna("") + " " + df["ErrorMessage"].fillna("")
 df = df.dropna(subset=["text", "ErrorCode", "RequiredOperations"])
