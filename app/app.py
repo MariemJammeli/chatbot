@@ -60,6 +60,21 @@ if "selected_history" not in st.session_state:
     st.session_state.selected_history = None
 
 # ========== Load resources ==========
+import os
+import zipfile
+
+# Décompresser le dataset si nécessaire
+if not os.path.exists("ml.csv"):
+    if os.path.exists("dataset.zip"):
+        with zipfile.ZipFile("dataset.zip", 'r') as zip_ref:
+            zip_ref.extractall(".")
+        print("✅ Fichier ml.csv extrait depuis dataset.zip")
+    else:
+        raise FileNotFoundError("❌ Le fichier dataset.zip est introuvable.")
+
+# Maintenant, on peut charger le CSV
+import pandas as pd
+df = pd.read_csv("ml.csv", sep=';')
 
 df = pd.read_csv("ml.csv", sep=';')
 df["ErrorCode"] = df["ErrorKindTypeKey"].astype(str) + "-" + df["ErrorType"].astype(str)
