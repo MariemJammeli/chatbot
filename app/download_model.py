@@ -3,7 +3,7 @@ import os
 import gdown 
 # Liste des fichiers à télécharger (id, nom de sortie)
 files = [
-    ("159Y8TcaaikeDhwp6GTK9IHYRHfICI1QJ", "dataset_chatbot.zip")
+    ("159Y8TcaaikeDhwp6GTK9IHYRHfICI1QJ", "app/dataset.zip")
 ]
 for file_id, output in files:
     if os.path.exists(output):
@@ -12,7 +12,7 @@ for file_id, output in files:
     url = f"https://drive.google.com/uc?id={file_id}"
     print(f"Téléchargement de {output} ...")
     gdown.download(url, output, quiet=False)
-zip_path = "app/dataset.zip"
+zip_path = "app/dataset.zip"  # même que dans la liste ci-dessus
 extracted_file = "ml.csv"  # or whatever the actual CSV file is called
 
 if not os.path.exists(extracted_file):
