@@ -27,9 +27,9 @@ required_files = [
     'ml.csv'
 ]
 
+# Exemple
 current_files = os.listdir("app")
-
-missing_files = [file for file in required_files if file not in current_files]
+missing_files = [f for f in required_files if f not in current_files]
 
 if missing_files:
     print("Fichiers manquants :", missing_files)
