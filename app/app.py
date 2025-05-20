@@ -262,9 +262,6 @@ else:
                                 st.info("📨 Wir arbeiten jetzt an deinem Serviceauftrag. "
                                 "Die Informationen wurden an den Administrator gesendet, "
                                 "und er wird sich in Kürze mit dir in Verbindung setzen.")
-                                if st.button("🆕 Neue Konversation starten"):
-                                    st.session_state.selected_history = None
-                                    st.experimental_rerun()
 
                                 st.session_state.chat_history.append({
                                     "topic": f"{code} - {ops[:30]}...",
@@ -279,6 +276,10 @@ else:
                                     "estimated_time": estimated_time
                                 })
                                 save_history(st.session_state.chat_history)
+                                # 👉 New conversation button at the end
+                                if st.button("🆕 Neue Konversation starten"):
+                                    st.session_state.selected_history = None
+                                    st.experimental_rerun()
                             else:
                                 st.markdown("⏱️ **Geschätzte Reparaturzeit:** Nicht verfügbar")
                         else:
