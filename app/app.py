@@ -263,7 +263,7 @@ else:
                     else:
                         st.warning("⚠️ Kein passender Fehlercode-Eintrag gefunden für die Technikerempfehlung.")
                 elif solved_answer:
-                st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.")
+                    st.success("🎉 Danke, dass du den Chatbot benutzt hast! Wir freuen uns, dass dein Problem gelöst ist.")
 
 # --- Always show this button at the bottom, outside all conditionals ---
 st.markdown("---")
