@@ -239,6 +239,10 @@ else:
                             if not duration_match.empty:
                                 estimated_time = int(duration_match["DurationInMinutes"].mean())
                                 st.markdown(f"⏱️ **Die Arbeit wird voraussichtlich etwa {estimated_time} Minuten dauern.**")
+                                st.info("📨 Wir arbeiten jetzt an deinem Serviceauftrag. "
+                                "Die Informationen wurden an den Administrator gesendet, "
+                                "und er wird sich in Kürze mit dir in Verbindung setzen.")
+
                             else:
                                 estimated_time = None
                                 st.markdown("⏱️ **Keine Schätzung der Dauer verfügbar.**")
